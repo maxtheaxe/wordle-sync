@@ -22,28 +22,39 @@ function syncStorage() { // if I knew JS at all, this would be far more modular
 		// if there is an existing backup, compare it to local storage
 		if (result.wordleBackup !== undefined) {
 			console.log("found remote backup");
-			let retrievedStorage = result.wordleBackup;
+			console.log(result.wordleBackup);
+			var retrievedStorage = result.wordleBackup;
 			// get length of histories
-			if (retrievedStorage['statistics']['gamesPlayed'] !== undefined) {
-				var storedLength = retrievedStorage['statistics']['gamesPlayed'];
+			console.log(`here: ${retrievedStorage['statistics']}`);
+			var storedLength = 0; // remote backup has no games played
+			var localLength = 0; // local backup has no games played
+			if (retrievedStorage['statistics'] !== undefined) {
+				if (retrievedStorage['statistics']['gamesPlayed'] !== undefined) {
+					storedLength = retrievedStorage['statistics']['gamesPlayed'];
+				}
 			}
 			else {
 				var storedLength = 0; // existing backup had no games played
 			}
-			if (currentLocalStorage['statistics']['gamesPlayed'] !== undefined) {
-				var storedLength = currentLocalStorage['statistics']['gamesPlayed'];
+			if (currentLocalStorage['statistics'] !== undefined) {
+				if (currentLocalStorage['statistics']['gamesPlayed'] !== undefined) {
+					localLength = currentLocalStorage['statistics']['gamesPlayed'];
+				}
 			}
-			else {
-				var localLength = 0; // existing backup had no games played
-			}
+			console.log("retrieved stored and local lengths");
 			// identify longer history
 			if (storedLength > localLength) {
+				console.log("stored > local");
 				var useLocal = false;
 			}
 			else if (localLength > storedLength) {
+				console.log("local > stored");
 				var useLocal = true;
 			}
 			else { // same number of games played, need to compare moves on current game
+				console.log("stored = local");
+				console.log(`remote index: ${retrievedStorage['gameState']['rowIndex']}`);
+				console.log(`local index: ${currentLocalStorage['gameState']['rowIndex']}`);
 				if (retrievedStorage['gameState']['rowIndex'] > currentLocalStorage['gameState']['rowIndex']) {
 					var useLocal = false;
 				}
@@ -83,8 +94,8 @@ function syncStorage() { // if I knew JS at all, this would be far more modular
 window.addEventListener('game-key-press', (e) => {
 	var s = e.detail.key; // from custom event defined by the wordle guy
 	if (s === '↵' || s === 'Enter') {
-		console.log("detected enter keypress")
-		storageSync() // order a storage update
+		console.log("detected enter keypress");
+		syncStorage(); // order a storage update
 	}
 });
 
@@ -92,6 +103,6 @@ window.addEventListener('game-key-press', (e) => {
  * when the user changes a setting, call storageSync()
  */
 window.addEventListener('game-setting-change', () => {
-	console.log("detected setting change")
-	storageSync() // order a storage update
+	console.log("detected setting change");
+	syncStorage(); // order a storage update
 });
