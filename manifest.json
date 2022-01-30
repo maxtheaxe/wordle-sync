@@ -46,10 +46,10 @@
 		// }],
 		"default_title": "wordle sync",
 		"default_popup": "popup/toolbox.html"
-	},
-
-	"background": {
-		"scripts": ["background/storage_scout.js"]
 	}
+
+	// "background": {
+	// 	"scripts": ["background/storage_scout.js"]
+	// }
 
 }
