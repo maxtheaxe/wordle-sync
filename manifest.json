@@ -1,0 +1,55 @@
+{
+
+	"description": "keep track of your wordle progress across all devices",
+	"manifest_version": 2,
+	"name": "wordle sync",
+	"version": "1.0",
+	"homepage_url": "https://wordlesync.com/",
+	"icons": {
+		"48": "icons/lsh-48.png"
+	},
+
+	"permissions": [
+		// "activeTab",
+		// "downloads",
+		"storage",
+		"*://*.powerlanguage.co.uk/*"
+	],
+
+	"content_scripts": [
+		{
+			"matches": ["*://*.powerlanguage.co.uk/*"],
+			"js": ["content_scripts/storage_collector.js"]
+		}
+	],
+
+	"options_ui": {
+		"browser_style": true,
+		"open_in_tab": true,
+		"page": "settings/options.html"
+	},
+
+	"browser_specific_settings": {
+		"gecko": {
+			"id": "firefox@wordlesync.com"
+		}
+	},
+
+	// update_url
+
+	"browser_action": {
+		"default_icon": "icons/linkedin-sales-helper.png",
+		// "theme_icons": [{
+		// 		"light": "icons/beasts-32-light.png",
+		// 		"dark": "icons/beasts-32.png",
+		// 		"size": 32
+		// }],
+		"default_title": "wordle sync",
+		"default_popup": "popup/toolbox.html"
+	},
+
+	"background": {
+		"scripts": ["background/storage_scout.js"]
+	}
+
+}
