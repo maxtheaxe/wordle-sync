@@ -24,12 +24,6 @@
 		}
 	],
 
-	"browser_specific_settings": {
-		"gecko": {
-			"id": "firefox@wordlesync.com"
-		}
-	},
-
 	"action": {
 		"default_icon": "icons/wordle-sync.png",
 		"default_title": "wordle sync",
