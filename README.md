@@ -1,2 +1,2 @@
 # wordle-sync
-keep track of your wordle progress across all devices
+sync your wordle games and progress across all your devices

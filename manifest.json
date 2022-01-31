@@ -10,7 +10,6 @@
 	},
 
 	"permissions": [
-		// "tabs",
 		"storage",
 		"*://*.powerlanguage.co.uk/*"
 	],
@@ -22,28 +21,16 @@
 		}
 	],
 
-	// "options_ui": {
-	// 	"browser_style": true,
-	// 	"open_in_tab": true,
-	// 	"page": "settings/options.html"
-	// },
-
 	"browser_specific_settings": {
 		"gecko": {
 			"id": "firefox@wordlesync.com"
 		}
 	},
 
-	// update_url
-
 	"browser_action": {
 		"default_icon": "icons/wordle-sync.png",
 		"default_title": "wordle sync",
 		"default_popup": "popup/toolbox.html"
 	}
-
-	// "background": {
-	// 	"scripts": ["background/link_opener.js"]
-	// }
 
 }
