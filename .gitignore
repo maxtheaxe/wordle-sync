@@ -2,3 +2,6 @@ scrap.js
 scrap/
 settings/options_*.*
 *.zip
+.json
+settings/
+link_opener.js
