@@ -88,9 +88,19 @@ function syncStorage() { // if I knew JS at all, this would be far more modular
 				'lastPlayedTs', 'rowIndex', 'solution'];
 			if (localDay > remoteDay) {
 				console.log("remote data associated with older day, keeping some local");
-				for (const key in keepLocal) {
-					localStorage.setItem(key,
-						JSON.stringify(currentLocalStorage['gameState'][key]));
+				// update retrievedStorage with correct local values, in
+				// order to rewrite localStorage more easily
+				// for (const key in keepLocal)
+				for (let i = 0; i < keepLocal.length; i++) {
+					let key = keepLocal[i]
+					console.log(`key: ${key}`)
+					console.log(currentLocalStorage['gameState'][key])
+					retrievedStorage['gameState'][key] = currentLocalStorage['gameState'][key];
+				}
+				console.log("updated retrieved: ");
+				console.log(retrievedStorage)
+				for (const key in retrievedStorage) { // update local data from fixed
+					localStorage.setItem(key, JSON.stringify(retrievedStorage[key]))
 				}
 			}
 			chrome.storage.sync.set({'wordleBackup': currentLocalStorage}, () => {
