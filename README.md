@@ -1,2 +1,2 @@
-# linkedin sales helper site
-website for both versions of linkedin sales helper
+# wordle sync site
+super basic page with a few links

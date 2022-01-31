@@ -1,5 +1,5 @@
 html {
-	background: #b4b9c2;
+	background: #ECFCF0;
 }
 body {
 }
@@ -34,13 +34,13 @@ a.button {
 	display: inline-block;
 	margin: 0px;
 	padding: 5px;
-	background: white;
+	background: #6aaa64;
 	border-radius: 2px;
 	text-decoration: none;
 	color: initial;
 }
 a.button:hover {
-	background: gray;
+	background: #b4d4b1;
 }
 a.first {
 	margin-bottom: 3px;
