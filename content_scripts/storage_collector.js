@@ -1,6 +1,7 @@
 // storage_collector.js for wordle-sync by maxtheaxe
 
 console.log("successfully injected storage collector");
+syncStorage();
 
 /**
  * update synced storage from local (keep longest history by default)
@@ -25,7 +26,6 @@ function syncStorage() { // if I knew JS at all, this would be far more modular
 			console.log(result.wordleBackup);
 			var retrievedStorage = result.wordleBackup;
 			// get length of histories
-			console.log(`here: ${retrievedStorage['statistics']}`);
 			var storedLength = 0; // remote backup has no games played
 			var localLength = 0; // local backup has no games played
 			if (retrievedStorage['statistics'] !== undefined) {
@@ -93,12 +93,8 @@ function syncStorage() { // if I knew JS at all, this would be far more modular
 				// for (const key in keepLocal)
 				for (let i = 0; i < keepLocal.length; i++) {
 					let key = keepLocal[i]
-					console.log(`key: ${key}`)
-					console.log(currentLocalStorage['gameState'][key])
 					retrievedStorage['gameState'][key] = currentLocalStorage['gameState'][key];
 				}
-				console.log("updated retrieved: ");
-				console.log(retrievedStorage)
 				for (const key in retrievedStorage) { // update local data from fixed
 					localStorage.setItem(key, JSON.stringify(retrievedStorage[key]))
 				}
@@ -147,7 +143,7 @@ window.addEventListener('keypress', (e) => {
 		chrome.storage.sync.get('wordleBackup', (result) => {
 			// if there is an existing backup, compare it to local storage
 			if (result.wordleBackup !== undefined) {
-				console.log("found remote backup");
+				console.log("grabbing remote backup");
 				console.log(result.wordleBackup);
 			}
 		});
