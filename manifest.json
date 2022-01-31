@@ -40,10 +40,10 @@
 		"default_icon": "icons/wordle-sync.png",
 		"default_title": "wordle sync",
 		"default_popup": "popup/toolbox.html"
-	},
-
-	"background": {
-		"scripts": ["background/link_opener.js"]
 	}
+
+	// "background": {
+	// 	"scripts": ["background/link_opener.js"]
+	// }
 
 }
