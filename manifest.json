@@ -11,12 +11,13 @@
 
 	"permissions": [
 		"storage",
-		"*://*.powerlanguage.co.uk/*"
+		"https://*.powerlanguage.co.uk/*",
+		"https://*.nytimes.com/games/*"
 	],
 
 	"content_scripts": [
 		{
-			"matches": ["*://*.powerlanguage.co.uk/*"],
+			"matches": ["https://*.powerlanguage.co.uk/*", "https://*.nytimes.com/games/*"],
 			"js": ["content_scripts/storage_collector.js"]
 		}
 	],

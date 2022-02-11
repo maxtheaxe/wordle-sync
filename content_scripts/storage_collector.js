@@ -4,6 +4,31 @@ console.log("successfully injected storage collector");
 syncStorage();
 
 /**
+ * get appropriate name format, based on current page (NYT vs powerlanguage)
+ */
+function getName(saveName) { // enums in js???
+	// if on an NYT page, names need to be converted back
+	if window.location.href.includes("https://www.nytimes.com") {
+		// convert original powerlanguage save names to new NYT format
+		// for universal comparison and interoperability between schemes/histories
+		// checking for each invidually bc not all are required
+		if (saveName === "colorBlindTheme") {
+			return "nyt-wordle-cbmode";
+		} else if (saveName === "darkTheme") {
+			return "nyt-wordle-darkmode";
+		} else if (saveName === "gameState") {
+			return "nyt-wordle-state";
+		} else if (saveName === "statistics") {
+			return "nyt-wordle-statistics";
+		} else { // nyt-wordle-refresh (no idea what this does) and possibly others
+			return saveName; // not found, return self
+		}
+	} else { // if on powerlanguage page (or future other servers), no conversion needed
+		return saveName;
+	}
+}
+
+/**
  * parse localStorage to JSON (and handle NYT)
  */
 function parseLocalStorage() {
@@ -101,7 +126,8 @@ function syncStorage() { // if I knew JS at all, this would be far more modular
 		if (!useLocal) { // if remote is newer, update local storage
 			console.log("remote is newer, updating local storage");
 			for (const key in retrievedStorage) { // update local data
-				localStorage.setItem(key, JSON.stringify(retrievedStorage[key]))
+				localStorage.setItem(getName(key),
+						JSON.stringify(retrievedStorage[key]));
 			}
 			// check if remote backup is associated with the same day as today
 			// calculate "wordle day" for remote and local
@@ -128,7 +154,8 @@ function syncStorage() { // if I knew JS at all, this would be far more modular
 					retrievedStorage['gameState'][key] = currentLocalStorage['gameState'][key];
 				}
 				for (const key in retrievedStorage) { // update local data from fixed
-					localStorage.setItem(key, JSON.stringify(retrievedStorage[key]))
+					localStorage.setItem(getName(key),
+						JSON.stringify(retrievedStorage[key]));
 				}
 			}
 			chrome.storage.sync.set({'wordleBackup': currentLocalStorage}, () => {
