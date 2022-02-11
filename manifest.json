@@ -1,7 +1,7 @@
 {
 
 	"description": "keep track of your wordle progress across all devices",
-	"manifest_version": 2,
+	"manifest_version": 3,
 	"name": "wordle sync",
 	"version": "1.0",
 	"homepage_url": "https://wordlesync.com/",
@@ -10,7 +10,10 @@
 	},
 
 	"permissions": [
-		"storage",
+		"storage"
+	],
+
+	"host_permissions": [
 		"https://*.powerlanguage.co.uk/*",
 		"https://*.nytimes.com/games/*"
 	],
@@ -22,13 +25,7 @@
 		}
 	],
 
-	"browser_specific_settings": {
-		"gecko": {
-			"id": "firefox@wordlesync.com"
-		}
-	},
-
-	"browser_action": {
+	"action": {
 		"default_icon": "icons/wordle-sync.png",
 		"default_title": "wordle sync",
 		"default_popup": "popup/toolbox.html"
