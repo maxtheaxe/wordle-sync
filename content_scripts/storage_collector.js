@@ -4,20 +4,50 @@ console.log("successfully injected storage collector");
 syncStorage();
 
 /**
- * update synced storage from local (keep longest history by default)
+ * parse localStorage to JSON (and handle NYT)
  */
-function syncStorage() { // if I knew JS at all, this would be far more modular
+function parseLocalStorage() {
 	console.log("syncing storage");
 	// convert localStorage into a proper JSON (parse substrings)
 	var currentLocalStorage = {};
-	for (const key in localStorage){
+	for (const key in localStorage) {
 		// make sure we are only picking up the actual values stored by wordle
-		if(typeof(localStorage[key]) === 'string'){
-			currentLocalStorage[key] = JSON.parse(localStorage[key])
+		if (typeof(localStorage[key]) === 'string') {
+			currentLocalStorage[key] = JSON.parse(localStorage[key]);
 			// console.log(`${key} : ${localStorage[key]}`)
 		}
 	}
-	// console.log(currentLocalStorage) // print cleaned JSON
+	if (window.location.href.includes("https://www.nytimes.com")) { // if on NYT version
+		console.log("handling nyt version");
+		for (const key in currentLocalStorage) {
+			// convert NYT save names to original powerlanguage format
+			// for universal comparison and interoperability between schemes/histories
+			// checking for each invidually bc not all are required
+			if (key === "nyt-wordle-cbmode") {
+				currentLocalStorage['colorBlindTheme'] = currentLocalStorage[key];
+			} else if (key === "nyt-wordle-darkmode") {
+				currentLocalStorage['darkTheme'] = currentLocalStorage[key];
+			} else if (key === "nyt-wordle-state") {
+				currentLocalStorage['gameState'] = currentLocalStorage[key];
+			} else if (key === "nyt-wordle-statistics") {
+				currentLocalStorage['statistics'] = currentLocalStorage[key];
+			} else { // nyt-wordle-refresh (no idea what this does) and possibly others
+				continue; // so key doesn't get deleted (probably new, unhandled one)
+			}
+			// console.log(currentLocalStorage[key]);
+			// get rid of key (only happens if existed as powerlanguage save obj)
+			// otherwise, assume it's a new feature and sync as normal
+			delete currentLocalStorage[key];
+		}
+	}
+	console.log(currentLocalStorage); // print cleaned JSON
+}
+
+/**
+ * update synced storage from local (keep longest history by default)
+ */
+function syncStorage() { // if I knew JS at all, this would be far more modular
+	parseLocalStorage();
 	// retrieve backed up storage
 	chrome.storage.sync.get('wordleBackup', (result) => {
 		// if there is an existing backup, compare it to local storage
@@ -93,6 +123,8 @@ function syncStorage() { // if I knew JS at all, this would be far more modular
 				// for (const key in keepLocal)
 				for (let i = 0; i < keepLocal.length; i++) {
 					let key = keepLocal[i]
+					// for old powerlanguage version
+					// if (window.location.href.includes("query")) // if query in url
 					retrievedStorage['gameState'][key] = currentLocalStorage['gameState'][key];
 				}
 				for (const key in retrievedStorage) { // update local data from fixed
