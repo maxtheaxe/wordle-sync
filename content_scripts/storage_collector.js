@@ -8,7 +8,7 @@ syncStorage();
  */
 function getName(saveName) { // enums in js???
 	// if on an NYT page, names need to be converted back
-	if window.location.href.includes("https://www.nytimes.com") {
+	if (window.location.href.includes("https://www.nytimes.com")) {
 		// convert original powerlanguage save names to new NYT format
 		// for universal comparison and interoperability between schemes/histories
 		// checking for each invidually bc not all are required
@@ -23,9 +23,9 @@ function getName(saveName) { // enums in js???
 		} else { // nyt-wordle-refresh (no idea what this does) and possibly others
 			return saveName; // not found, return self
 		}
-	} else { // if on powerlanguage page (or future other servers), no conversion needed
-		return saveName;
 	}
+	// if on powerlanguage page (or future other servers), no conversion needed
+	return saveName;
 }
 
 /**
@@ -65,14 +65,15 @@ function parseLocalStorage() {
 			delete currentLocalStorage[key];
 		}
 	}
-	console.log(currentLocalStorage); // print cleaned JSON
+	// console.log(currentLocalStorage); // print cleaned JSON
+	return currentLocalStorage;
 }
 
 /**
  * update synced storage from local (keep longest history by default)
  */
 function syncStorage() { // if I knew JS at all, this would be far more modular
-	parseLocalStorage();
+	currentLocalStorage = parseLocalStorage();
 	// retrieve backed up storage
 	chrome.storage.sync.get('wordleBackup', (result) => {
 		// if there is an existing backup, compare it to local storage
@@ -127,7 +128,7 @@ function syncStorage() { // if I knew JS at all, this would be far more modular
 			console.log("remote is newer, updating local storage");
 			for (const key in retrievedStorage) { // update local data
 				localStorage.setItem(getName(key),
-						JSON.stringify(retrievedStorage[key]));
+					JSON.stringify(retrievedStorage[key]));
 			}
 			// check if remote backup is associated with the same day as today
 			// calculate "wordle day" for remote and local

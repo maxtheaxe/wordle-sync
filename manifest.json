@@ -3,7 +3,7 @@
 	"description": "keep track of your wordle progress across all devices",
 	"manifest_version": 2,
 	"name": "wordle sync",
-	"version": "0.70",
+	"version": "1.0",
 	"homepage_url": "https://wordlesync.com/",
 	"icons": {
 		"48": "icons/ws-48.png"
